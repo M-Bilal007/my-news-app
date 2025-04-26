@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Card from '@/components/card/Card';
+
 export default function SearchPage() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -46,29 +47,36 @@ export default function SearchPage() {
     }
   }, [query]);
 
+  const addToFavorites = (article) => {
+    // Add your favorite logic here
+    console.log('Added to favorites:', article);
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
     <div className='p-4'>
-      <h1 className='text-2xl font-bold mb-4 text-center text-white py-2'>Search Results for: {query}</h1>
+      <h1 className='text-2xl font-bold mb-4 text-center text-white py-2'>
+        Search Results for: {query}
+      </h1>
       {articles.length > 0 ? (
-       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-               {articles.map((article, index) => (
-                 <div key={index}>
-                   <Card
-                     alt={article.title}
-                     cardImage={article.image}
-                     description={article.description}
-                     heading={article.title}
-                     href={article.url}
-                     FavoriteHandler={() => addToFavorites(article)}
-                   />
-                 </div>
-               ))}
-             </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {articles.map((article, index) => (
+            <div key={index}>
+              <Card
+                alt={article.title}
+                cardImage={article.image}
+                description={article.description}
+                heading={article.title}
+                href={article.url}
+                FavoriteHandler={() => addToFavorites(article)}
+              />
+            </div>
+          ))}
+        </div>
       ) : (
-        <p>No results found for "{query}"</p>
+        <p>No results found for &quot;{query}&quot;</p>
       )}
     </div>
   );
